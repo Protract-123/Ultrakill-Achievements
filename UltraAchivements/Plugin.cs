@@ -121,6 +121,7 @@ namespace Ultrakill_Achivements
                 int ex = achContent.transform.childCount;
                 for (int i = 0; i < ex; i++)
                 {   
+                    //Destroy(achievementsDisplay.transform.GetChild(i).gameObject);
                     achContent.transform.GetChild(i).gameObject.SetActive(false);
                 }
             
