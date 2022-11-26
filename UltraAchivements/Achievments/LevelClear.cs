@@ -15,53 +15,95 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
         {
             string scene = SceneManager.GetActiveScene().name;
             StatsManager stats = null;
-            float time;
+            int time;
             if (scene != null)
             {
+                Console.print("test 1 passed");
                 GameObject[] root = SceneManager.GetActiveScene().GetRootGameObjects();
                 if (root != null)
                 {
+                    Console.print("test 2 passed");
+
                     foreach (GameObject obj in root)
                     {
                         if (obj.name == "StatsManager")
                         {
+                            Console.print("test 3 passed");
+
                             stats = obj.GetComponent<StatsManager>();
-                            time = stats.seconds;
+                            time = (int)stats.seconds;
                             if (rank == "<color=#FFFFFF>P</color>")
                             {
-                                if (time < 120)
+                                Console.print("test 4 passed");
+                                Console.print(time);
+                                if (time != null)
                                 {
-                                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
-                                    string name = "Killer Machine";
-                                    string description = "P Rank a level in under 2 minutes";
-                                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
-                                    string mod = "UltraAchievements Protract";
-                                    Core.ShowAchievementI(icon, name, description, sprite, mod);
-                                }
-                                else if (time < 60)
-                                {
-                                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
-                                    string name = "UltraKiller Machine";
-                                    string description = "P Rank a level in under 1 minute";
-                                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
-                                    string mod = "UltraAchievements Protract";
-                                    Core.ShowAchievementI(icon, name, description, sprite, mod);
+                                    if (time < 120)
+                                    {
+                                        Console.print("give ach1");
+                                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                                        string name = "Killer Machine";
+                                        string description = "P Rank a level in under 2 minutes";
+                                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
+                                        string mod = "UltraAchievements Protract";
+                                        Core.ShowAchievementI(icon, name, description, sprite, mod);
+                                    }
+                                    if (time < 60)
+                                    {
+                                        Console.print("give ach1");
+                                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                                        string name = "UltraKiller Machine";
+                                        string description = "P Rank a level in under 1 minute";
+                                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
+                                        string mod = "UltraAchievements Protract";
+                                        Core.ShowAchievementI(icon, name, description, sprite, mod);
+                                    }
                                 }
                             }
                         }
                     }
+                    GameObject main;
+                    main = GameObject.FindGameObjectWithTag("MainCamera");
+                    Console.print(main);
 
-                    GameObject main = GameObject.FindGameObjectWithTag("MainCamera");
-                    FistControl fist = main.GetComponentInChildren<FistControl>();
-                    ItemType item = fist.heldObject.itemType;
+                    if (scene == "Level P-1" && rank == "<color=#FFFFFF>P</color>")
+                    {
+                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                        string name = "WEAK";
+                        string description = "P-Rank P-1";
+                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
+                        string mod = "UltraAchievements Protract";
+                        Core.ShowAchievementI(icon, name, description, sprite, mod);
+                    }
+                    if (scene == "Level 1-S")
+                    {
+                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                        string name = "Puzzle Solver";
+                        string description = "Beat 1-S";
+                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
+                        string mod = "UltraAchievements Protract";
+                        Core.ShowAchievementI(icon, name, description, sprite, mod);
+                    }
+
                     if (main != null)
                     {
+                        FistControl fist = main.GetComponentInChildren<FistControl>();
+                        Console.print(fist);
+                        Console.print("test 5 passed");
+
                         if (fist != null)
                         {
+                            ItemIdentifier item = fist.heldObject;
+                            Console.print(item);
+                            Console.print("test 6 passed");
+
                             if (item != null)
                             {
+                                ItemType itemType = item.itemType;
+                                Console.print("test 7 passed");
 
-                                if (item == ItemType.SkullGreen || item == ItemType.SkullBlue || item == ItemType.SkullRed)
+
+                                if (itemType == ItemType.SkullGreen || itemType == ItemType.SkullBlue || itemType == ItemType.SkullRed)
                                 {
                                     string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
                                     string name = "Dead on Arrival";
@@ -69,27 +111,9 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
                                     string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
                                     string mod = "UltraAchievements Protract";
                                     Core.ShowAchievementI(icon, name, description, sprite, mod);
+                                    Console.print("test 8 passed");
 
                                 }
-                                else if (scene == "Level P-1" && rank == "<color=#FFFFFF>P</color>")
-                                {
-                                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
-                                    string name = "WEAK";
-                                    string description = "P-Rank P-1";
-                                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
-                                    string mod = "UltraAchievements Protract";
-                                    Core.ShowAchievementI(icon, name, description, sprite, mod);
-                                }
-                                if (scene == "Level 1-S")
-                                {
-                                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
-                                    string name = "Puzzle Solver";
-                                    string description = "Beat 1-S";
-                                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
-                                    string mod = "UltraAchievements Protract";
-                                    Core.ShowAchievementI(icon, name, description, sprite, mod);
-                                }
-
 
                             }
                         }

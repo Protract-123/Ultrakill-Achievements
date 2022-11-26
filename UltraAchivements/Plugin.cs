@@ -3,12 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using HarmonyLib;
-using GameConsole;
 using System.IO;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
-using UltraAchievement;
+using System;
+using Ultrakill_Achivements.UltraAchivements;
+using Console = GameConsole.Console;
 
 namespace Ultrakill_Achivements
 {
@@ -21,12 +22,15 @@ namespace Ultrakill_Achivements
         private GameObject _achDisplay;
         private GameObject _canvas;
         private GameObject menu;
-        private static string path = $"{Application.persistentDataPath}\\achievements.uaf";
-
-
-
-
-
+        readonly private static string path = $"{Application.persistentDataPath}\\achievements.uaf";
+        
+        private static AchStruct[] achListSorted;
+        private static List<string> achList;
+        private static int pageInt = 0;
+        private static GameObject pageTextGO;
+        private static GameObject _achContent;
+        private static GameObject achTextGO;
+        private static Vector2 deltaSize;
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
@@ -41,7 +45,7 @@ namespace Ultrakill_Achivements
                     _canvas = item;
                 }
             }
-            
+
         }
         public void Start()
         {
@@ -50,10 +54,19 @@ namespace Ultrakill_Achivements
             SceneManager.sceneLoaded += OnSceneLoaded;
 
         }
-
+        int RoundUpValue(float value, int decimalpoint)
+        {
+            float value1 = value % 9;
+            int result = (int)Math.Round(value / 9);
+            if (value1 > 0)
+            {
+                result = (int)Math.Round(value / 9) + 1;
+                Console.print(result);
+            }
+            return result;
+        }
         public void Update()
         {
-
             Scene scene = SceneManager.GetActiveScene();
             if (scene.name.Contains("Menu"))
             {
@@ -61,18 +74,223 @@ namespace Ultrakill_Achivements
                 {
                     _achDisplay = _canvas.transform.Find("achDisplay").gameObject;
                 }
-                if(menu == null)
+                if (menu == null)
                 {
                     menu = _canvas.transform.Find("Main Menu (1)").gameObject;
                 }
 
-                
+
                 if (Keyboard.current.escapeKey.wasPressedThisFrame)
                 {
-                    if (_achDisplay.activeSelf == true)
+                    if (menu != null && _achDisplay != null)
                     {
-                        _achDisplay.SetActive(!_achDisplay.activeSelf);
-                        menu.SetActive(true);
+                        if (_achDisplay.activeSelf == true)
+                        {
+                            _achDisplay.SetActive(!_achDisplay.activeSelf);
+                            menu.SetActive(true);
+                        }
+                    }
+                }
+                if(_achContent != null && pageTextGO != null && achList != null && achTextGO != null && _achDisplay.activeSelf)
+                {
+                    if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+                    {
+                        VerticalLayoutGroup vlg = _achContent.GetComponent<VerticalLayoutGroup>();
+
+                        for (int i = 0; i < _achContent.transform.childCount; i++)
+                        {
+                            Destroy(_achContent.transform.GetChild(i).gameObject);
+                        }
+                        if (pageInt <= RoundUpValue(achList.Count, 0) && pageInt != 0)
+                        {
+                            Console.print("Previous Page Works");
+                            pageInt--;
+                            pageTextGO.GetComponent<Text>().text = $"{pageInt + 1}/{RoundUpValue(achList.Count, 0)}";
+
+
+                            List<string> segment = null;
+                            Console.print($"{achList.Count} + {pageInt * 9}");
+                            if ((pageInt + 1) * 9 < achList.Count)
+                            {
+                                segment = achList.GetRange(pageInt * 9, 9);
+
+                            }
+                            else
+                            {
+                                int a = achList.Count - pageInt * 9;
+                                Console.print($"{pageInt * 9}-" + $"{9 - a}-" + $"{achList.Count}");
+                                segment = achList.GetRange(pageInt * 9, a);
+                            }
+
+
+                            if (segment != null)
+                            {
+                                achListSorted = new AchStruct[segment.Count];
+                                int i = 0;
+                                foreach (var ach in segment)
+                                {
+                                    string[] achievement = ach.Split('.');
+                                    AchStruct achStruct = new AchStruct(achievement[0], achievement[1], achievement[2]);
+                                    achListSorted[i] = achStruct;
+                                    i++;
+                                }
+                            }
+
+
+                            ColorBlock colors = new ColorBlock()
+                            {
+                                normalColor = new Color(0, 0, 0, 0.512f),
+                                highlightedColor = new Color(1, 1, 1, 0.502f),
+                                pressedColor = new Color(1, 0, 0, 1),
+                                selectedColor = new Color(0, 0, 0, 0.512f),
+                                disabledColor = new Color(0.7843f, 0.7843f, 0.7843f, 0.502f),
+                                colorMultiplier = 1f,
+                                fadeDuration = 0.1f
+                            };
+
+                            GameObject template = new GameObject("template");
+                            template.SetActive(false);
+                            GameObject templateText = GameObject.Instantiate(achTextGO);
+                            templateText.SetActive(false);
+
+                            for (int i = 0; i < segment.Count; i++)
+                            {
+                                AchStruct ach = achListSorted[i];
+
+                                GameObject x = GameObject.Instantiate(template, _achContent.transform, true);
+                                x.AddComponent<RectTransform>();
+                                x.name = $"ach{i}";
+                                x.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 5);
+                                x.transform.localPosition = new Vector3(0, -36, 1);
+                                x.transform.localScale = new Vector3((float)13.3333, (float)13.3333, (float)0.6667);
+
+
+
+                                GameObject y = GameObject.Instantiate(templateText, x.transform, true);
+                                y.transform.localPosition = new Vector3(0, 0.5f, 0);
+                                y.transform.localScale = new Vector3(0.11f, 0.11f, 1);
+                                y.name = $"achText{i}";
+
+
+                                x.AddComponent<Image>();
+                                Image sprite = x.GetComponent<Image>();
+                                sprite.color = colors.normalColor;
+
+                                Text text1 = y.GetComponent<Text>();
+                                text1.text = $"{ach.achName}";
+                                text1.alignment = (TextAnchor)TextAlignment.Center;
+                                text1.fontSize = 12;
+
+                                x.SetActive(true);
+                                y.SetActive(true);
+
+
+
+                            }
+
+
+                        }
+
+                    }
+                    if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+                    {
+                        VerticalLayoutGroup vlg = _achContent.GetComponent<VerticalLayoutGroup>();
+
+                        for (int i = 0; i < _achContent.transform.childCount; i++)
+                        {
+                            Destroy(_achContent.transform.GetChild(i).gameObject);
+                        }
+                        if (pageInt + 2 <= RoundUpValue(achList.Count, 0))
+                        {
+                            Console.print("Next Page Works");
+                            pageInt++;
+                            pageTextGO.GetComponent<Text>().text = $"{pageInt + 1}/{RoundUpValue(achList.Count, 0)}";
+
+
+
+                            List<string> segment = null;
+                            Console.print($"{achList.Count} + {pageInt*9}");
+                            if( (pageInt +1) * 9 < achList.Count)
+                            {
+                                segment = achList.GetRange(pageInt * 9, 9);
+
+                            }
+                            else
+                            {
+                                int a = achList.Count - pageInt*9;
+                                Console.print($"{pageInt * 9}-" + $"{9 - a}-" + $"{achList.Count}");
+                                segment = achList.GetRange(pageInt * 9, a);
+                            }
+
+                            
+                                if (segment != null)
+                                {
+                                    achListSorted = new AchStruct[segment.Count];
+                                    int i = 0;
+                                    foreach (var ach in segment)    
+                                    {
+                                        string[] achievement = ach.Split('.');
+                                        AchStruct achStruct = new AchStruct(achievement[0], achievement[1], achievement[2]);
+                                        achListSorted[i] = achStruct;
+                                        i++;
+                                    }
+                                }
+                            
+
+                            ColorBlock colors = new ColorBlock()
+                            {
+                                normalColor = new Color(0, 0, 0, 0.512f),
+                                highlightedColor = new Color(1, 1, 1, 0.502f),
+                                pressedColor = new Color(1, 0, 0, 1),
+                                selectedColor = new Color(0, 0, 0, 0.512f),
+                                disabledColor = new Color(0.7843f, 0.7843f, 0.7843f, 0.502f),
+                                colorMultiplier = 1f,
+                                fadeDuration = 0.1f
+                            };
+
+                            GameObject template = new GameObject("template");
+                            template.SetActive(false);
+                            GameObject templateText = GameObject.Instantiate(achTextGO);
+                            templateText.SetActive(false);
+
+                            for (int i = 0; i < segment.Count; i++)
+                            {
+                                AchStruct ach = achListSorted[i];
+
+                                GameObject x = GameObject.Instantiate(template, _achContent.transform, true);
+                                x.AddComponent<RectTransform>();
+                                x.name = $"ach{i}";
+                                x.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 5);
+                                x.transform.localPosition = new Vector3(0, -36, 1);
+                                x.transform.localScale = new Vector3((float)13.3333, (float)13.3333, (float)0.6667);
+
+
+
+                                GameObject y = GameObject.Instantiate(templateText, x.transform, true);
+                                y.transform.localPosition = new Vector3(0, 0.5f, 0);
+                                y.transform.localScale = new Vector3(0.11f, 0.11f, 1);
+                                y.name = $"achText{i}";
+
+
+                                x.AddComponent<Image>();
+                                Image sprite = x.GetComponent<Image>();
+                                sprite.color = colors.normalColor;
+
+                                Text text1 = y.GetComponent<Text>();
+                                text1.text = $"{ach.achName}";
+                                text1.alignment = (TextAnchor)TextAlignment.Center;
+                                text1.fontSize = 12;
+
+                                x.SetActive(true);
+                                y.SetActive(true);
+
+
+
+                            }
+
+
+                        }
+
                     }
                 }
             }
@@ -82,6 +300,36 @@ namespace Ultrakill_Achivements
 
         public static void Prefix(OptionsMenuToManager __instance)
         {
+            Sprite LoadSprite(Texture2D texture, Vector4 border, float pixelsPerUnit)
+            {
+                return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit, 0, SpriteMeshType.Tight, border);
+            }
+
+            bool assets = true;
+            AssetBundle assetBundle = null;
+
+            var loadAssetBundle = AssetBundle.GetAllLoadedAssetBundles();
+
+            foreach(var bundle in loadAssetBundle)
+            {
+                if (bundle.name == "ach")
+                {
+                    assets = false;
+                    assetBundle = bundle;
+                }
+                
+            }
+
+            if (assets)
+            {
+                assetBundle = AssetBundle.LoadFromMemory(UltraAchivements.Properties.Resource1.ach);
+            }
+
+            Texture2D arrowTexture = assetBundle.LoadAsset<Texture2D>("bitmap");
+            Sprite arrowSprite = LoadSprite(arrowTexture, Vector4.zero, 100);
+
+            
+            int currentPage;
             void transform(Transform tf)
             {
                 bool wasActive = tf.gameObject.activeSelf;
@@ -112,17 +360,18 @@ namespace Ultrakill_Achivements
                 achievementsDisplay.name = "achDisplay";
                 achievementsDisplay.SetActive(false);
                 GameObject achivementText = achievementsDisplay.transform.Find("Text").gameObject;
+                achTextGO = achivementText;
                 Text achText = achivementText.gameObject.GetComponent<Text>();
                 achText.text = "--ACHIEVEMENTS--";
                 Transform achArea = achievementsDisplay.transform.Find("Scroll Rect (1)");
                 GameObject achContent = achArea.gameObject.transform.Find("Contents").gameObject;
+                _achContent = achContent;
                 
                 //activate achDisplay
                 int ex = achContent.transform.childCount;
                 for (int i = 0; i < ex; i++)
-                {   
-                    //Destroy(achievementsDisplay.transform.GetChild(i).gameObject);
-                    achContent.transform.GetChild(i).gameObject.SetActive(false);
+                {
+                    Destroy(achContent.transform.GetChild(i).gameObject);
                 }
             
 
@@ -132,70 +381,164 @@ namespace Ultrakill_Achivements
                     __instance.CheckIfTutorialBeaten();
                     __instance.pauseMenu.SetActive(false);
                     achievementsDisplay.SetActive(true);
-                });
+                }); 
 
                 //set achDisplay content
-                string[][] GetAchievements()
+                List<string> GetAchievements()
                 {
 
                     List<string> achievements = File.ReadAllLines(path).ToList<string>();
-                    int i = 0;
-                    string[][] achivement = new string[achievements.Count()][];
-                    foreach (var ach in achievements)
-                    {
-                        achivement[i] = ach.Split('.');
-                        i++;
-                    }
-                    return achivement;
+
+
+                    return achievements;
                 }
                 
-                string[][] achList = GetAchievements();
-                int achLength = achList.GetLength(0);
 
-                GameObject template = new GameObject("template");
-                template.SetActive(false);
-                GameObject templateText = GameObject.Instantiate(achivementText);
-                templateText.SetActive(false);
+               List<string> achListUnsorted = GetAchievements();
+                achList = achListUnsorted;
+                
 
-                achContent.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.UpperCenter;
+               void nextPage(int page){
+                    currentPage = page;
+                    pageInt = 0;
+                    for (int i = 0; i < ex; i++)
+                    {
+                        Destroy(achContent.transform.GetChild(i).gameObject);
+                    }
+                    if (achListUnsorted != null) {
+                        if (page < achListUnsorted.Count / 9) {
+
+                            List<string> segment;
+                            segment = achListUnsorted.GetRange(page*9, 9);
+
+                            if (segment != null)
+                            {
+                                if (segment != null)
+                                {
+                                    achListSorted = new AchStruct[segment.Count];
+                                    int i = 0;
+                                    foreach (var ach in segment)
+                                    {
+                                        string[] achievement = ach.Split('.');
+                                        AchStruct achStruct = new AchStruct(achievement[0], achievement[1], achievement[2]);
+                                        achListSorted[i] = achStruct;
+                                        i++;
+                                    }
+                                }
+                            }
+
+                            int achLength = segment.Count;
+
+                            GameObject template = new GameObject("template");
+                            template.SetActive(false);
+                            GameObject templateText = GameObject.Instantiate(achivementText);
+                            templateText.SetActive(false);
 
 
-                for (int i = 0; i < achLength; i++)
-                {
-                    GameObject x = GameObject.Instantiate(template, achContent.transform, true);
-                    x.AddComponent<RectTransform>();
-                    x.name = $"ach{i}";
-                    x.GetComponent<RectTransform>().sizeDelta = new Vector2(100,5); 
-                    x.transform.localPosition = new Vector3(0,-36,1);
-                    VerticalLayoutGroup vlg = achContent.GetComponent<VerticalLayoutGroup>();
-                    vlg.childAlignment = TextAnchor.UpperCenter;
-                    vlg.childScaleHeight = true;
+
+                            ColorBlock colors = new ColorBlock()
+                            {
+                                normalColor = new Color(0, 0, 0, 0.512f),
+                                highlightedColor = new Color(1, 1, 1, 0.502f),
+                                pressedColor = new Color(1, 0, 0, 1),
+                                selectedColor = new Color(0, 0, 0, 0.512f),
+                                disabledColor = new Color(0.7843f, 0.7843f, 0.7843f, 0.502f),
+                                colorMultiplier = 1f,
+                                fadeDuration = 0.1f
+                            };
+
+                            VerticalLayoutGroup vlg = achContent.GetComponent<VerticalLayoutGroup>();
+                            vlg.childAlignment = TextAnchor.UpperCenter;
+                            vlg.childScaleHeight = true;
+                            
+
+                            for (int i = 0; i < achLength; i++)
+                            {
+                                AchStruct ach = achListSorted[i];
+                                    
+                                GameObject x = GameObject.Instantiate(template, achContent.transform, true);
+                                x.AddComponent<RectTransform>();
+                                x.name = $"ach{i}";
+                                x.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 5);
+                                deltaSize = x.GetComponent<RectTransform>().sizeDelta;
+                                x.transform.localPosition = new Vector3(0, -36, 1);
 
 
-                    GameObject y = GameObject.Instantiate(templateText, x.transform, true);
-                    y.transform.localPosition = new Vector3(0,0.5f,0);
-                    y.transform.localScale = new Vector3(0.11f, 0.11f,1);
-                    y.name = $"achText{i}";
 
-                    x.AddComponent<Image>();
-                    Image sprite = x.GetComponent<Image>();
-                    sprite.color = new Color(0.2745f, 0.2745f, 0.3529f, 0.4f);
-                    
-                    Text text1 = y.GetComponent<Text>();
-                    text1.text = $"{achList[i][0]}";
-                    text1.alignment = (TextAnchor)TextAlignment.Center;
-                    text1.fontSize = 12;
-
-                    x.SetActive(true);
-                    y.SetActive(true);
+                                GameObject y = GameObject.Instantiate(templateText, x.transform, true);
+                                y.transform.localPosition = new Vector3(0, 0.5f, 0);
+                                y.transform.localScale = new Vector3(0.11f, 0.11f, 1);
+                                y.name = $"achText{i}";
 
 
+                                x.AddComponent<Image>();
+                                Image sprite = x.GetComponent<Image>();
+                                sprite.color = colors.normalColor;
 
-                }
+                                Text text1 = y.GetComponent<Text>();
+                                text1.text = $"{ach.achName}";
+                                text1.alignment = (TextAnchor)TextAlignment.Center;
+                                text1.fontSize = 12;
 
+                                x.SetActive(true);
+                                y.SetActive(true);
+
+
+
+                            }
+
+                            int RoundUpValue(float value, int decimalpoint)
+                            {
+                                float value1 = value % 9;
+                                int result = (int)Math.Round(value/9);
+                                if (value1 > 0)
+                                {
+                                    result = (int)Math.Round(value/9) + 1;
+                                    Console.print(result);
+                                }
+                                return result;
+                            }
+
+
+                            GameObject pageContainer = GameObject.Instantiate(template, achievementsDisplay.transform);
+                            pageContainer.AddComponent<VerticalLayoutGroup>();
+                            pageContainer.AddComponent<Image>();
+                            pageContainer.GetComponent<Image>().color = colors.normalColor;
+                            pageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 40);
+                            pageContainer.transform.localPosition = new Vector3(0, 230, 0);
+                            VerticalLayoutGroup vlg2 = pageContainer.GetComponent<VerticalLayoutGroup>();
+                            vlg2.childAlignment = TextAnchor.MiddleCenter;
+                            pageContainer.name = "pageInfo";
+                            pageContainer.SetActive(true);
+
+                            GameObject pageGo = GameObject.Instantiate(achText.gameObject, pageContainer.transform);
+                            RectTransform pageSize = pageGo.GetComponent<RectTransform>();
+                            Text pageText = pageGo.GetComponent<Text>();
+                            pageText.text = $"{currentPage + 1}/{RoundUpValue(achListUnsorted.Count, 0)}";
+                            pageText.fontSize = 12;
+                            pageText.name = "Page Num";
+                            pageGo.SetActive(true);
+                            pageTextGO = pageGo;
+
+                            GameObject pageInfo = GameObject.Instantiate(achText.gameObject, pageContainer.transform);
+                            RectTransform pageInfSize = pageInfo.GetComponent<RectTransform>();
+                            Text pageInfText = pageInfo.GetComponent<Text>();
+                            pageInfText.fontSize = 12;
+                            pageInfText.text = "Use your arrow keys to navigate between pages";
+                            pageInfText.name = "pageControls";
+                            pageInfo.SetActive(true);
+                            
+
+
+
+                        }
+                    }
+               }
+               nextPage(0);
             }
 
         }
+
 
     }
 }
