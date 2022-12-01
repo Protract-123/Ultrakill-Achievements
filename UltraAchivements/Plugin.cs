@@ -10,6 +10,7 @@ using System.Linq;
 using System;
 using Ultrakill_Achivements.UltraAchivements;
 using Console = GameConsole.Console;
+using Discord;
 
 namespace Ultrakill_Achivements
 {
@@ -30,7 +31,6 @@ namespace Ultrakill_Achivements
         private static GameObject pageTextGO;
         private static GameObject _achContent;
         private static GameObject achTextGO;
-        private static Vector2 deltaSize;
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
@@ -57,11 +57,16 @@ namespace Ultrakill_Achivements
         int RoundUpValue(float value, int decimalpoint)
         {
             float value1 = value % 9;
-            int result = (int)Math.Round(value / 9);
-            if (value1 > 0)
+            int result = 0;
+            if (value1 < 4.5)
             {
                 result = (int)Math.Round(value / 9) + 1;
-                Console.print(result);
+                return result;
+            }
+            if (value1 > 4.5)
+            {
+                result = (int)Math.Round(value / 9);
+                return result;
             }
             return result;
         }
@@ -97,13 +102,13 @@ namespace Ultrakill_Achivements
                     {
                         VerticalLayoutGroup vlg = _achContent.GetComponent<VerticalLayoutGroup>();
 
-                        for (int i = 0; i < _achContent.transform.childCount; i++)
-                        {
-                            Destroy(_achContent.transform.GetChild(i).gameObject);
-                        }
+
                         if (pageInt <= RoundUpValue(achList.Count, 0) && pageInt != 0)
                         {
-                            Console.print("Previous Page Works");
+                            for (int i = 0; i < _achContent.transform.childCount; i++)
+                            {
+                                Destroy(_achContent.transform.GetChild(i).gameObject);
+                            }
                             pageInt--;
                             pageTextGO.GetComponent<Text>().text = $"{pageInt + 1}/{RoundUpValue(achList.Count, 0)}";
 
@@ -155,6 +160,7 @@ namespace Ultrakill_Achivements
 
                             for (int i = 0; i < segment.Count; i++)
                             {
+
                                 AchStruct ach = achListSorted[i];
 
                                 GameObject x = GameObject.Instantiate(template, _achContent.transform, true);
@@ -162,27 +168,58 @@ namespace Ultrakill_Achivements
                                 x.name = $"ach{i}";
                                 x.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 5);
                                 x.transform.localPosition = new Vector3(0, -36, 1);
-                                x.transform.localScale = new Vector3((float)13.3333, (float)13.3333, (float)0.6667);
+                                x.transform.localScale = new Vector3(13.3333f, 13.3333f, 0.6667f);
 
 
 
                                 GameObject y = GameObject.Instantiate(templateText, x.transform, true);
-                                y.transform.localPosition = new Vector3(0, 0.5f, 0);
+                                y.transform.localPosition = new Vector3(-9, 1.5f, 0);
                                 y.transform.localScale = new Vector3(0.11f, 0.11f, 1);
                                 y.name = $"achText{i}";
+
+                                GameObject z = GameObject.Instantiate(templateText, x.transform, true);
+                                z.transform.localPosition = new Vector3(-9, -0.4836f, 0);
+                                z.transform.localScale = new Vector3(0.11f, 0.11f, 1);
+                                z.name = $"achText{i}";
 
 
                                 x.AddComponent<Image>();
                                 Image sprite = x.GetComponent<Image>();
                                 sprite.color = colors.normalColor;
 
-                                Text text1 = y.GetComponent<Text>();
-                                text1.text = $"{ach.achName}";
-                                text1.alignment = (TextAnchor)TextAlignment.Center;
-                                text1.fontSize = 12;
+                                int count = 0;
+                                foreach (char chr in ach.achName)
+                                {
+                                    count++;
+                                }
+
+                                if (count > 29)
+                                {
+                                    y.GetComponent<RectTransform>().sizeDelta = new Vector2(350, 30);
+                                    y.transform.localPosition = new Vector3(-3, 1.5f, 0);
+
+                                    Text text1 = y.GetComponent<Text>();
+                                    text1.fontSize = 12;
+                                    text1.text = $"{ach.achName}";
+                                    text1.alignment = (TextAnchor)TextAlignment.Left;
+                                }
+                                else
+                                {
+                                    Text text1 = y.GetComponent<Text>();
+                                    text1.fontSize = 14;
+                                    text1.text = $"{ach.achName}";
+                                    text1.alignment = (TextAnchor)TextAlignment.Left;
+                                }
+
+                                Text text2 = z.GetComponent<Text>();
+                                text2.text = $"{ach.achDescrip}";
+                                text2.alignment = (TextAnchor)TextAlignment.Left;
+                                text2.fontSize = 11;
 
                                 x.SetActive(true);
                                 y.SetActive(true);
+                                z.SetActive(true);
+
 
 
 
@@ -196,12 +233,13 @@ namespace Ultrakill_Achivements
                     {
                         VerticalLayoutGroup vlg = _achContent.GetComponent<VerticalLayoutGroup>();
 
-                        for (int i = 0; i < _achContent.transform.childCount; i++)
-                        {
-                            Destroy(_achContent.transform.GetChild(i).gameObject);
-                        }
+
                         if (pageInt + 2 <= RoundUpValue(achList.Count, 0))
                         {
+                            for (int i = 0; i < _achContent.transform.childCount; i++)
+                            {
+                                Destroy(_achContent.transform.GetChild(i).gameObject);
+                            }
                             Console.print("Next Page Works");
                             pageInt++;
                             pageTextGO.GetComponent<Text>().text = $"{pageInt + 1}/{RoundUpValue(achList.Count, 0)}";
@@ -255,6 +293,7 @@ namespace Ultrakill_Achivements
 
                             for (int i = 0; i < segment.Count; i++)
                             {
+
                                 AchStruct ach = achListSorted[i];
 
                                 GameObject x = GameObject.Instantiate(template, _achContent.transform, true);
@@ -262,27 +301,59 @@ namespace Ultrakill_Achivements
                                 x.name = $"ach{i}";
                                 x.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 5);
                                 x.transform.localPosition = new Vector3(0, -36, 1);
-                                x.transform.localScale = new Vector3((float)13.3333, (float)13.3333, (float)0.6667);
+                                x.transform.localScale = new Vector3(13.3333f, 13.3333f, 0.6667f);
 
 
 
                                 GameObject y = GameObject.Instantiate(templateText, x.transform, true);
-                                y.transform.localPosition = new Vector3(0, 0.5f, 0);
+                                y.transform.localPosition = new Vector3(-9, 1.5f, 0);
                                 y.transform.localScale = new Vector3(0.11f, 0.11f, 1);
                                 y.name = $"achText{i}";
+
+                                GameObject z = GameObject.Instantiate(templateText, x.transform, true);
+                                z.transform.localPosition = new Vector3(-9, -0.4836f, 0);
+                                z.transform.localScale = new Vector3(0.11f, 0.11f, 1);
+                                z.name = $"achText{i}";
 
 
                                 x.AddComponent<Image>();
                                 Image sprite = x.GetComponent<Image>();
                                 sprite.color = colors.normalColor;
 
-                                Text text1 = y.GetComponent<Text>();
-                                text1.text = $"{ach.achName}";
-                                text1.alignment = (TextAnchor)TextAlignment.Center;
-                                text1.fontSize = 12;
+                                int count = 0;
+                                foreach (char chr in ach.achName)
+                                { 
+                                    count++;
+                                }
+
+                                if(count > 29)
+                                {
+                                    y.GetComponent<RectTransform>().sizeDelta = new Vector2(350, 30);
+                                    y.transform.localPosition = new Vector3(-3, 1.5f, 0);
+
+                                    Text text1 = y.GetComponent<Text>();
+                                    text1.fontSize = 12;
+                                    text1.text = $"{ach.achName}";
+                                    text1.alignment = (TextAnchor)TextAlignment.Left;
+                                }
+                                else
+                                {
+                                    Text text1 = y.GetComponent<Text>();
+                                    text1.fontSize = 14;
+                                    text1.text = $"{ach.achName}";
+                                    text1.alignment = (TextAnchor)TextAlignment.Left;
+                                }
+
+
+                                Text text2 = z.GetComponent<Text>();
+                                text2.text = $"{ach.achDescrip}";
+                                text2.alignment = (TextAnchor)TextAlignment.Left;
+                                text2.fontSize = 11;
 
                                 x.SetActive(true);
                                 y.SetActive(true);
+                                z.SetActive(true);
+
 
 
 
@@ -300,121 +371,108 @@ namespace Ultrakill_Achivements
 
         public static void Prefix(OptionsMenuToManager __instance)
         {
-            Sprite LoadSprite(Texture2D texture, Vector4 border, float pixelsPerUnit)
+            List<string> GetAchievements()
             {
-                return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit, 0, SpriteMeshType.Tight, border);
+
+                List<string> achievements = File.ReadAllLines(path).ToList<string>();
+
+
+                return achievements;
             }
-
-            bool assets = true;
-            AssetBundle assetBundle = null;
-
-            var loadAssetBundle = AssetBundle.GetAllLoadedAssetBundles();
-
-            foreach(var bundle in loadAssetBundle)
+            List<string> l = GetAchievements();
+            if (l.Count > 0)
             {
-                if (bundle.name == "ach")
+
+                int currentPage;
+                void transform(Transform tf)
                 {
-                    assets = false;
-                    assetBundle = bundle;
+                    bool wasActive = tf.gameObject.activeSelf;
+                    tf.gameObject.SetActive(false);
+                    //tf.localScale = new Vector3(.5f, 1f, 1f);
+                    tf.GetComponent<RectTransform>().sizeDelta = new Vector2(480, 80);
+                    //tf.Find("Text").localScale = new Vector3(2f, 1f, 1f);
+
+                    Traverse hudEffect = Traverse.Create(tf.gameObject.GetComponent<HudOpenEffect>());
+                    hudEffect.Field("originalWidth").SetValue(1f);
+                    hudEffect.Field("originalHeight").SetValue(1f);
+                    tf.gameObject.SetActive(wasActive);
                 }
-                
-            }
-
-            if (assets)
-            {
-                assetBundle = AssetBundle.LoadFromMemory(UltraAchivements.Properties.Resource1.ach);
-            }
-
-            Texture2D arrowTexture = assetBundle.LoadAsset<Texture2D>("bitmap");
-            Sprite arrowSprite = LoadSprite(arrowTexture, Vector4.zero, 100);
-
-            
-            int currentPage;
-            void transform(Transform tf)
-            {
-                bool wasActive = tf.gameObject.activeSelf;
-                tf.gameObject.SetActive(false);
-                //tf.localScale = new Vector3(.5f, 1f, 1f);
-                tf.GetComponent<RectTransform>().sizeDelta = new Vector2(480, 80);
-                //tf.Find("Text").localScale = new Vector3(2f, 1f, 1f);
-
-                Traverse hudEffect = Traverse.Create(tf.gameObject.GetComponent<HudOpenEffect>());
-                hudEffect.Field("originalWidth").SetValue(1f);
-                hudEffect.Field("originalHeight").SetValue(1f);
-                tf.gameObject.SetActive(wasActive);
-            }
-            if (__instance.pauseMenu.name == "Main Menu (1)")
-            {
-                //initalise achButton
-                __instance.pauseMenu.transform.Find("Panel").localPosition = new Vector3(0, -330, 0);
-                GameObject achivementsButton = GameObject.Instantiate(__instance.pauseMenu.transform.Find("Continue").gameObject, __instance.pauseMenu.transform, true);
-                achivementsButton.SetActive(false);
-                achivementsButton.transform.localPosition = new Vector3(0, -260, 0);
-                transform(achivementsButton.transform);
-                achivementsButton.GetComponentInChildren<Text>(true).text = "Achivements";
-                achivementsButton.name = "ACHIVEMENTS";
-                achivementsButton.SetActive(true);
-
-                //initialise achDisplay
-                GameObject achievementsDisplay = GameObject.Instantiate(__instance.optionsMenu.transform.Find("Gameplay Options").gameObject, __instance.transform, true);
-                achievementsDisplay.name = "achDisplay";
-                achievementsDisplay.SetActive(false);
-                GameObject achivementText = achievementsDisplay.transform.Find("Text").gameObject;
-                achTextGO = achivementText;
-                Text achText = achivementText.gameObject.GetComponent<Text>();
-                achText.text = "--ACHIEVEMENTS--";
-                Transform achArea = achievementsDisplay.transform.Find("Scroll Rect (1)");
-                GameObject achContent = achArea.gameObject.transform.Find("Contents").gameObject;
-                _achContent = achContent;
-                
-                //activate achDisplay
-                int ex = achContent.transform.childCount;
-                for (int i = 0; i < ex; i++)
+                if (__instance.pauseMenu.name == "Main Menu (1)")
                 {
-                    Destroy(achContent.transform.GetChild(i).gameObject);
-                }
-            
+                    //initalise achButton
+                    __instance.pauseMenu.transform.Find("Panel").localPosition = new Vector3(0, -330, 0);
+                    GameObject achivementsButton = GameObject.Instantiate(__instance.pauseMenu.transform.Find("Continue").gameObject, __instance.pauseMenu.transform, true);
+                    achivementsButton.SetActive(false);
+                    achivementsButton.transform.localPosition = new Vector3(0, -260, 0);
+                    transform(achivementsButton.transform);
+                    achivementsButton.GetComponentInChildren<Text>(true).text = "Achievements";
+                    achivementsButton.name = "ACHIEVEMENTS";
+                    achivementsButton.SetActive(true);
 
-                Button.ButtonClickedEvent modsButton = achivementsButton.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
-                modsButton.AddListener(delegate
-                {
-                    __instance.CheckIfTutorialBeaten();
-                    __instance.pauseMenu.SetActive(false);
-                    achievementsDisplay.SetActive(true);
-                }); 
+                    //initialise achDisplay
+                    GameObject achievementsDisplay = GameObject.Instantiate(__instance.optionsMenu.transform.Find("Gameplay Options").gameObject, __instance.transform, true);
+                    achievementsDisplay.name = "achDisplay";
+                    achievementsDisplay.SetActive(false);
+                    GameObject achivementText = achievementsDisplay.transform.Find("Text").gameObject;
+                    achTextGO = achivementText;
+                    Text achText = achivementText.gameObject.GetComponent<Text>();
+                    achText.text = "--ACHIEVEMENTS--";
+                    Transform achArea = achievementsDisplay.transform.Find("Scroll Rect (1)");
+                    GameObject achContent = achArea.gameObject.transform.Find("Contents").gameObject;
+                    _achContent = achContent;
 
-                //set achDisplay content
-                List<string> GetAchievements()
-                {
-
-                    List<string> achievements = File.ReadAllLines(path).ToList<string>();
-
-
-                    return achievements;
-                }
-                
-
-               List<string> achListUnsorted = GetAchievements();
-                achList = achListUnsorted;
-                
-
-               void nextPage(int page){
-                    currentPage = page;
-                    pageInt = 0;
+                    //activate achDisplay
+                    int ex = achContent.transform.childCount;
                     for (int i = 0; i < ex; i++)
                     {
                         Destroy(achContent.transform.GetChild(i).gameObject);
                     }
-                    if (achListUnsorted != null) {
-                        if (page < achListUnsorted.Count / 9) {
+
+
+                    Button.ButtonClickedEvent modsButton = achivementsButton.GetComponent<Button>().onClick = new Button.ButtonClickedEvent();
+                    modsButton.AddListener(delegate
+                    {
+                        __instance.CheckIfTutorialBeaten();
+                        __instance.pauseMenu.SetActive(false);
+                        achievementsDisplay.SetActive(true);
+                    });
+
+                    //set achDisplay content
+
+
+
+                    List<string> achListUnsorted = GetAchievements();
+                    achList = achListUnsorted;
+
+
+                    void nextPage(int page)
+                    {
+                        currentPage = page;
+                        Console.print("test1");
+                        pageInt = 0;
+                        for (int i = 0; i < ex; i++)
+                        {
+                            Destroy(achContent.transform.GetChild(i).gameObject);
+                        }
+                        if (achListUnsorted != null)
+                        {
+                            Console.print("test2");
 
                             List<string> segment;
-                            segment = achListUnsorted.GetRange(page*9, 9);
+                            if (achListUnsorted.Count >= 9)
+                            {
+                                segment = achListUnsorted.GetRange(page * 9, 9);
+                            }
+                            else segment = achListUnsorted;
 
                             if (segment != null)
                             {
+                                Console.print("test3");
+
                                 if (segment != null)
                                 {
+                                    Console.print("test4");
+
                                     achListSorted = new AchStruct[segment.Count];
                                     int i = 0;
                                     foreach (var ach in segment)
@@ -434,6 +492,7 @@ namespace Ultrakill_Achivements
                             GameObject templateText = GameObject.Instantiate(achivementText);
                             templateText.SetActive(false);
 
+                            Console.print("test5");
 
 
                             ColorBlock colors = new ColorBlock()
@@ -450,38 +509,68 @@ namespace Ultrakill_Achivements
                             VerticalLayoutGroup vlg = achContent.GetComponent<VerticalLayoutGroup>();
                             vlg.childAlignment = TextAnchor.UpperCenter;
                             vlg.childScaleHeight = true;
-                            
+
 
                             for (int i = 0; i < achLength; i++)
                             {
                                 AchStruct ach = achListSorted[i];
-                                    
+
                                 GameObject x = GameObject.Instantiate(template, achContent.transform, true);
                                 x.AddComponent<RectTransform>();
                                 x.name = $"ach{i}";
                                 x.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 5);
-                                deltaSize = x.GetComponent<RectTransform>().sizeDelta;
                                 x.transform.localPosition = new Vector3(0, -36, 1);
+                                x.transform.localScale = new Vector3(13.3333f, 13.3333f, 0.6667f);
 
 
 
                                 GameObject y = GameObject.Instantiate(templateText, x.transform, true);
-                                y.transform.localPosition = new Vector3(0, 0.5f, 0);
+                                y.transform.localPosition = new Vector3(-9, 1.5f, 0);
                                 y.transform.localScale = new Vector3(0.11f, 0.11f, 1);
                                 y.name = $"achText{i}";
+
+                                GameObject z = GameObject.Instantiate(templateText, x.transform, true);
+                                z.transform.localPosition = new Vector3(-9, -0.4836f, 0);
+                                z.transform.localScale = new Vector3(0.11f, 0.11f, 1);
+                                z.name = $"achText{i}";
 
 
                                 x.AddComponent<Image>();
                                 Image sprite = x.GetComponent<Image>();
                                 sprite.color = colors.normalColor;
+                                int count = 0;
+                                foreach (char chr in ach.achName)
+                                {
+                                    count++;
+                                }
 
-                                Text text1 = y.GetComponent<Text>();
-                                text1.text = $"{ach.achName}";
-                                text1.alignment = (TextAnchor)TextAlignment.Center;
-                                text1.fontSize = 12;
+                                if (count > 29)
+                                {
+                                    y.GetComponent<RectTransform>().sizeDelta = new Vector2(350, 30);
+                                    y.transform.localPosition = new Vector3(-3, 1.5f, 0);
+
+                                    Text text1 = y.GetComponent<Text>();
+                                    text1.fontSize = 12;
+                                    text1.text = $"{ach.achName}";
+                                    text1.alignment = (TextAnchor)TextAlignment.Left;
+                                }
+                                else
+                                {
+                                    Text text1 = y.GetComponent<Text>();
+                                    text1.fontSize = 14;
+                                    text1.text = $"{ach.achName}";
+                                    text1.alignment = (TextAnchor)TextAlignment.Left;
+                                }
+
+                                Text text2 = z.GetComponent<Text>();
+                                text2.text = $"{ach.achDescrip}";
+                                text2.alignment = (TextAnchor)TextAlignment.Left;
+                                text2.fontSize = 11;
 
                                 x.SetActive(true);
                                 y.SetActive(true);
+                                z.SetActive(true);
+
 
 
 
@@ -490,11 +579,16 @@ namespace Ultrakill_Achivements
                             int RoundUpValue(float value, int decimalpoint)
                             {
                                 float value1 = value % 9;
-                                int result = (int)Math.Round(value/9);
-                                if (value1 > 0)
+                                int result = 0;
+                                if (value1 < 4.5)
                                 {
-                                    result = (int)Math.Round(value/9) + 1;
-                                    Console.print(result);
+                                    result = (int)Math.Round(value / 9) + 1;
+                                    return result;
+                                }
+                                if (value1 > 4.5)
+                                {
+                                    result = (int)Math.Round(value / 9);
+                                    return result;
                                 }
                                 return result;
                             }
@@ -505,7 +599,7 @@ namespace Ultrakill_Achivements
                             pageContainer.AddComponent<Image>();
                             pageContainer.GetComponent<Image>().color = colors.normalColor;
                             pageContainer.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 40);
-                            pageContainer.transform.localPosition = new Vector3(0, 230, 0);
+                            pageContainer.transform.localPosition = new Vector3(0, 235, 0);
                             VerticalLayoutGroup vlg2 = pageContainer.GetComponent<VerticalLayoutGroup>();
                             vlg2.childAlignment = TextAnchor.MiddleCenter;
                             pageContainer.name = "pageInfo";
@@ -527,18 +621,18 @@ namespace Ultrakill_Achivements
                             pageInfText.text = "Use your arrow keys to navigate between pages";
                             pageInfText.name = "pageControls";
                             pageInfo.SetActive(true);
-                            
+
 
 
 
                         }
                     }
-               }
-               nextPage(0);
+
+                    nextPage(0);
+                }
+
             }
 
         }
-
-
     }
 }

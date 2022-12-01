@@ -15,10 +15,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
             int currentvariation = __instance.currentVariation;
             if(currentweapon == "RailcannonHarpoon(Clone)")
             {
-                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\screwdriver.jpeg";
                 string name = "Why...";
                 string description = "Hold the screwdriver...";
-                string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
+                string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
                 string mod = "UltraAchievements Protract";
                 Core.ShowAchievementI(icon, name, description, sprite, mod);
             }

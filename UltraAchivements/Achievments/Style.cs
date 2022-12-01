@@ -12,59 +12,53 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
     {
         public static void Postfix(string pointID, GameObject sourceWeapon, StyleHUD __instance)
         {
-            Console.print(pointID);
             GunControl gc =  GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<GunControl>();
             GameObject currentWeapon = gc.currentWeapon;
-            
+            string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+
 
             GameObject gameObject = (pointID == "ultrakill.arsenal") ?  currentWeapon : sourceWeapon;
             StyleFreshnessState styleFreshness = __instance.GetFreshnessState(gameObject);
-            Console.print(styleFreshness);
 
             
             if (pointID == "ultrakill.chargeback")
             {
-                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\chargeback.png";
                 string name = "Fuck You";
                 string description = "You CHARGEBACKED AN ENEMY";
-                string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
                 string mod = "UltraAchievements Protract";
                 Core.ShowAchievementI(icon, name, description, sprite, mod);
             }
             else if (pointID == "ultrakill.fireworks")
             {
-                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\demoman.png";
                 string name = "KABLLOOIEE";
                 string description = "Explode an enemy in mid-air";
-                string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
                 string mod = "UltraAchievements Protract";
                 Core.ShowAchievementI(icon, name, description, sprite, mod);
             }
             else if (pointID == "ultrakill.mauriced")
             {
-                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\mauriced.png";
                 string name = "Twomphed";
                 string description = "Get thwomphed by maurice";
-                string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
                 string mod = "UltraAchievements Protract";
                 Core.ShowAchievementI(icon, name, description, sprite, mod);
             }
             else if (pointID == "ultrakill.parry")
             {
 
-                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\ntty.png";
                 string name = "Not Today, Thank You";
                 string description = "Parry an attack from an enemy";
-                string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
                 string mod = "UltraAchievements Protract";
                 Core.ShowAchievementI(icon, name, description, sprite, mod);
             }
             else if (pointID == "ultrakill.ricoshot")
             {
-                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\coin2.png";
                 string name = "You can do that?";
                 string description = "Shoot a Coin";
-                string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
                 string mod = "UltraAchievements Protract";
                 Core.ShowAchievementI(icon, name, description, sprite, mod);
             }
@@ -73,10 +67,9 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
             {
                 if (styleFreshness == StyleFreshnessState.Dull)
                 {
-                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\dull.jpeg";
                     string name = "Dull as a Door Knob";
                     string description = "Reach the Dull Freshness rank";
-                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
                     string mod = "UltraAchievements Protract";
                     Core.ShowAchievementI(icon, name, description, sprite, mod);
 

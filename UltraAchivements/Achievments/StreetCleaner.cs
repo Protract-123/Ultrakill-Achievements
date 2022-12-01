@@ -11,10 +11,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
     {
         public static void Postfix()
         {
-            string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+            string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\streetClean.jpeg";
             string name = "Backstab";
             string description = "Kill a StreetCleaner with a Coin";
-            string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
+            string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
             string mod = "UltraAchievements Protract";
             Core.ShowAchievementI(icon, name, description, sprite, mod);
         }

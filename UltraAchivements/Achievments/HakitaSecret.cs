@@ -35,10 +35,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
                                 {
                                     if (hakita.message == "YOU'RE NOT SUPPOSED TO BE HERE.")
                                     {
-                                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\ynstbh.png";
                                         string name = "YOU'RE NOT SUPPOSED TO BE HERE.";
                                         string description = "Try to get to future content";
-                                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
+                                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
                                         string mod = "UltraAchievements Protract";
                                         Core.ShowAchievementI(icon, name, description, sprite, mod);
                                     }
@@ -62,10 +62,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
                                 {
                                     if (hakita.message == "YOU'RE NOT SUPPOSED TO BE HERE.")
                                     {
-                                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\swordmachine.png";
+                                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\ynstbh.png";
                                         string name = "YOU'RE NOT SUPPOSED TO BE HERE.";
                                         string description = "Try to get to future content";
-                                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\modthing.jpeg";
+                                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
                                         string mod = "UltraAchievements Protract";
                                         Core.ShowAchievementI(icon, name, description, sprite, mod);
                                     }
