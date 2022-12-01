@@ -4,6 +4,8 @@ Adds 40+ achievements to Ultrakill, will probably be useless when ultrakill rele
 <br>I recommend to start a new save file to really enjoy the experience
 
 How to Install:
-https://www.youtube.com/watch?v=meNiXcbPh_s
+Download the zip file in releases.
+Watch the video:https://www.youtube.com/watch?v=meNiXcbPh_s
+Drop the contents of the zip folder into the plugins folder
 <br>
-Also install my fork of Ultra-Achievement Core Here:https://github.com/Protract-123/UltraAchievement-Core/releases
+Also UltraAchivementCore used by this mod is my fork of ZedDev's project, which you can find here: https://github.com/Protract-123/UltraAchievement-Core
