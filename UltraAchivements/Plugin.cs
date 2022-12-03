@@ -31,6 +31,8 @@ namespace Ultrakill_Achivements
         private static GameObject pageTextGO;
         private static GameObject _achContent;
         private static GameObject achTextGO;
+        readonly public static string path3 = BepInEx.Paths.PluginPath;
+
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
@@ -52,7 +54,6 @@ namespace Ultrakill_Achivements
             var harmony = new Harmony("Protract.UK.Achivements");
             harmony.PatchAll();
             SceneManager.sceneLoaded += OnSceneLoaded;
-
         }
         int RoundUpValue(float value, int decimalpoint)
         {

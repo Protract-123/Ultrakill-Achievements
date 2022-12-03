@@ -42,19 +42,19 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
                 if (x > 125 || z > 125)
                 {
 
-                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\zoom.jpeg";
+                    string icon = $"{Achivements.path3}\\Sprites\\Icons\\zoom.jpeg";
                     string name = "Wee!";
                     string description = "Wee! You went Zoom!";
-                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                    string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                     string mod = "UltraAchievements Protract";
                     Core.ShowAchievementI(icon, name, description, sprite, mod);
                 }
                 else if (x>140 || x > 140)
                 {
-                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\zoom.jpeg";
+                    string icon = $"{Achivements.path3}\\Sprites\\Icons\\zoom.jpeg";
                     string name = "Dejavu";
                     string description = "It's a place to go";
-                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                    string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                     string mod = "UltraAchievements Protract";
                     Core.ShowAchievementI(icon, name, description, sprite, mod);
                 }

@@ -11,10 +11,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
     {
         public static void Prefix()
         {
-            string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\DeleteSave.jpeg";
+            string icon = $"{Achivements.path3}\\Sprites\\Icons\\DeleteSave.jpeg";
             string name = "One step forward, Two steps back";
             string description = "Delete a save file";
-            string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+            string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
             string mod = "UltraAchievements Protract";
             Core.ShowAchievementI(icon, name, description, sprite, mod);
         }

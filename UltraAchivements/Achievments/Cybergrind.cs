@@ -33,19 +33,19 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
                 int i = arena.currentWave;
                 if (i >= 25)
                 {
-                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\25.jpeg";
+                    string icon = $"{Achivements.path3}\\Sprites\\Icons\\25.jpeg";
                     string name = "Cybergrind Wave 25";
                     string description = "You reached cybergrind wave 25!";
-                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                    string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                     string mod = "UltraAchievements Protract";
                     Core.ShowAchievementI(icon, name, description, sprite, mod);
                 }
                 else if (i >= 50)
                 {
-                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\50.jpeg";
+                    string icon = $"{Achivements.path3}\\Sprites\\Icons\\50.jpeg";
                     string name = "The Grind";
                     string description = "You reached cybergrind wave 50!";
-                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                    string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                     string mod = "UltraAchievements Protract";
                     Core.ShowAchievementI(icon, name, description, sprite, mod);
                 }

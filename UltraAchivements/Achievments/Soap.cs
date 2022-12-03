@@ -19,10 +19,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
             ItemType item = fist.heldObject.itemType;
             if(item == ItemType.Soap)
             {
-                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\soap.png";
+                string icon = $"{Achivements.path3}\\Sprites\\Icons\\soap.png";
                 string name = "Why a soap in hell?";
                 string description = "Pick up The Soap";
-                string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                 string mod = "UltraAchievements Protract";
                 Core.ShowAchievementI(icon, name, description, sprite, mod);
             }

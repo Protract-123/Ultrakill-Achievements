@@ -11,16 +11,19 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
     {
         public static void Postfix(GunControl __instance)
         {
-            string currentweapon = __instance.currentWeapon.name;
-            int currentvariation = __instance.currentVariation;
-            if(currentweapon == "RailcannonHarpoon(Clone)")
+            if (__instance != null)
             {
-                string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\screwdriver.jpeg";
-                string name = "Why...";
-                string description = "Hold the screwdriver...";
-                string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
-                string mod = "UltraAchievements Protract";
-                Core.ShowAchievementI(icon, name, description, sprite, mod);
+                string currentweapon = __instance.currentWeapon.name;
+                int currentvariation = __instance.currentVariation;
+                if (currentweapon == "RailcannonHarpoon(Clone)")
+                {
+                    string icon = $"{Achivements.path3}\\Sprites\\Icons\\screwdriver.jpeg";
+                    string name = "Why...";
+                    string description = "Hold the screwdriver...";
+                    string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
+                    string mod = "UltraAchievements Protract";
+                    Core.ShowAchievementI(icon, name, description, sprite, mod);
+                }
             }
         }
 

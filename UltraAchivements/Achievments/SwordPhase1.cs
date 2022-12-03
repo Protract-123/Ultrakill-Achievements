@@ -9,10 +9,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
     {
         public static void Postfix()
         {
-            string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\swordmachine.png";
+            string icon = $"{Achivements.path3}\\Sprites\\Icons\\swordmachine.png";
             string name = "Swordsmachine Phase 1";
             string description = "You beat Swordsmachine Phase 1";
-            string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+            string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
             string mod = "UltraAchievements Protract";
             Core.ShowAchievementI(icon, name, description,sprite, mod);
         }

@@ -9,10 +9,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
     {
         public static void Postfix()
         {
-            string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\Coin.jpeg";
+            string icon = $"{Achivements.path3}\\Sprites\\Icons\\Coin.jpeg";
             string name = "You Got Money";
             string description = "Pick up a coin";
-            string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+            string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
             string mod = "UltraAchievements Protract";
             Core.ShowAchievementI(icon, name, description, sprite, mod);
         }

@@ -32,10 +32,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
                 {
                     if (!sandcastle.activeSelf)
                     {
-                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\sc.jpeg";
+                        string icon = $"{Achivements.path3}\\Sprites\\Icons\\sc.jpeg";
                         string name = "You are a Monster";
                         string description = "Destroy the Sandcastle";
-                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                        string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                         string mod = "UltraAchievements Protract";
                         Core.ShowAchievementI(icon, name, description, sprite, mod);
                     }

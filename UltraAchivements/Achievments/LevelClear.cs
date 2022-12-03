@@ -34,19 +34,19 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
                                 {
                                     if (time < 120)
                                     {
-                                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\km.jpg";
+                                        string icon = $"{Achivements.path3}\\Sprites\\Icons\\km.jpg";
                                         string name = "Killer Machine";
                                         string description = "P Rank a level in under 2 minutes";
-                                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                                        string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                                         string mod = "UltraAchievements Protract";
                                         Core.ShowAchievementI(icon, name, description, sprite, mod);
                                     }
                                     if (time < 60)
                                     {
-                                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\ukm.jpg";
+                                        string icon = $"{Achivements.path3}\\Sprites\\Icons\\ukm.jpg";
                                         string name = "UltraKiller Machine";
                                         string description = "P Rank a level in under 1 minute";
-                                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                                        string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                                         string mod = "UltraAchievements Protract";
                                         Core.ShowAchievementI(icon, name, description, sprite, mod);
                                     }
@@ -59,19 +59,19 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
 
                     if (scene == "Level P-1" && rank == "<color=#FFFFFF>P</color>")
                     {
-                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\mpp%.png";
+                        string icon = $"{Achivements.path3}\\Sprites\\Icons\\mpp%.png";
                         string name = "WEAK";
                         string description = "P-Rank P-1";
-                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                        string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                         string mod = "UltraAchievements Protract";
                         Core.ShowAchievementI(icon, name, description, sprite, mod);
                     }
                     if (scene == "Level 1-S")
                     {
-                        string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\1-s.jpeg";
+                        string icon = $"{Achivements.path3}\\Sprites\\Icons\\1-s.jpeg";
                         string name = "Puzzle Solver";
                         string description = "Beat 1-S";
-                        string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                        string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                         string mod = "UltraAchievements Protract";
                         Core.ShowAchievementI(icon, name, description, sprite, mod);
                     }
@@ -91,10 +91,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
 
                                 if (itemType == ItemType.SkullGreen || itemType == ItemType.SkullBlue || itemType == ItemType.SkullRed)
                                 {
-                                    string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\dor.jpeg";
+                                    string icon = $"{Achivements.path3}\\Sprites\\Icons\\dor.jpeg";
                                     string name = "Dead on Arrival";
                                     string description = "Hold a skull on your way out";
-                                    string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+                                    string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
                                     string mod = "UltraAchievements Protract";
                                     Core.ShowAchievementI(icon, name, description, sprite, mod);
                                 }

@@ -14,10 +14,10 @@ namespace Ultrakill_Achivements.UltraAchivements.Achievments
     {
         public static void Postfix()
         {
-            string icon = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\Icons\\sisInsur.png";
+            string icon = $"{Achivements.path3}\\Sprites\\Icons\\sisInsur.png";
             string name = "Kill the Sisyphean Erectionist";
             string description = "I meant Insurrectionist";
-            string sprite = $"{Directory.GetCurrentDirectory()}\\BepInEx\\plugins\\Sprites\\achBG.png";
+            string sprite = $"{Achivements.path3}\\Sprites\\achBG.png";
             string mod = "UltraAchievements Protract";
             Core.ShowAchievementI(icon, name, description, sprite, mod);
         }
