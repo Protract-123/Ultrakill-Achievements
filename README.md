@@ -1,4 +1,4 @@
-# Ultrakill Achivements
+# Ultrakill Achievements
 
 Adds 40+ achievements to Ultrakill, will probably be useless when ultrakill releases but it's a fun project.
 <br>I recommend to start a new save file to really enjoy the experience
